@@ -235,7 +235,7 @@ if (!$resolver){
 }
 
 $webServiceAddressObject = $resolver.GetWebServiceUrl('SDK' ,1)
-
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12;
 $proxy = New-WebServiceProxy -Uri $webServiceAddressObject.ServiceURL -UseDefaultCredential #-Namespace CxSDK
 $proxy.Timeout = 600000
 
