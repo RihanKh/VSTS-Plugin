@@ -219,6 +219,8 @@ write-host "Connecting to Checkmarx at: $resolverUrl ....." -foregroundcolor "gr
 
 $resolver = $null
 try {
+
+    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12;
     $resolver = New-WebServiceProxy -Uri $resolverUrl -UseDefaultCredential
     $resolver.Timeout = 600000
 } catch {
