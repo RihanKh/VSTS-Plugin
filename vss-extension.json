@@ -129,17 +129,6 @@
             "type": "ms.vss-endpoint.endpoint-auth-scheme-basic",
             "inputDescriptors": [
               {
-                "id": "agentProxy",
-                "name": "Proxy",
-                "description": "If you're using proxy in your build agent (for example: http://proxy:8080)",
-                "inputMode": "textbox",
-                "isConfidential": false,
-                "validation": {
-                  "dataType": "String",
-                  "isRequired": false
-                }
-              },
-              {
                 "id": "username",
                 "name": "Username",
                 "description": "Checkmarx username",
