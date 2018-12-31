@@ -57,7 +57,7 @@ function createConfig(){
     if (!$fullTeamName.StartsWith("\")){
         $fullTeamName =  "\$fullTeamName"
     }
-    $config | Add-Member -MemberType NoteProperty -Name teamName -Value $fullTeamName;
+    $config | Add-Member -MemberType NoteProperty -Name teamName -Value $fullTeamName.trim();
     $config | Add-Member -MemberType NoteProperty -Name isPublic -Value $true
     $config | Add-Member -MemberType NoteProperty -Name sourceLocation -Value $sourceLocation
     $config | Add-Member -MemberType NoteProperty -Name isIncremental -Value ([System.Convert]::ToBoolean($incScan));
@@ -66,9 +66,9 @@ function createConfig(){
     $config | Add-Member -MemberType NoteProperty -Name zipFile -Value $null
     $config | Add-Member -MemberType NoteProperty -Name presetId -Value $null
     if (-not [string]::IsNullOrEmpty($customPreset)){
-      $presetName = $customPreset;
+      $presetName = $customPreset.trim();
     }else{
-      $presetName = $presetList
+      $presetName = $presetList.trim()
     }
     $config | Add-Member -MemberType NoteProperty -Name presetName -Value $presetName
     if ( [string]::IsNullOrEmpty($scanTimeout)){

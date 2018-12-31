@@ -29,7 +29,7 @@ function resolvePreset(){
 function getPresetIdByName($presetName) {
     $allPresets = getPresetList;
     foreach($preset in $allPresets){
-        if ($preset.name -like $presetName) { 
+        if ($preset.name.trim() -like $presetName) {
             return $preset.Id;
         }
     }
@@ -46,7 +46,7 @@ function resolveTeam(){
 function getTeamIdByName($teamName) {
     $allTeams = getTeamList;
     foreach($team in $allTeams) {
-        if ($team.fullName -like $teamName) { 
+        if ($team.fullName.trim() -like $teamName) {
             return $team.id;
         }
     }
