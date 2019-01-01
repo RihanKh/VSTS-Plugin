@@ -13,7 +13,7 @@ pipeline {
 		steps {
 			bat 'npm install -g tfx-cli'
 			bat 'del *.vsix'
-			bat 'C:\Program Files\nodejs\node.exe C:\Users\tfs\AppData\Roaming\npm\node_modules\tfx-cli\_build\tfx-cli.js extension create --manifest-globs vss-extension.json'
+			bat '"C:\Program Files\nodejs\node.exe" C:\Users\tfs\AppData\Roaming\npm\node_modules\tfx-cli\_build\tfx-cli.js extension create --manifest-globs vss-extension.json'
 		}
 	}
 	stage('Build_Package_Extension') {
