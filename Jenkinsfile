@@ -28,7 +28,7 @@ pipeline {
     } */
 	stage('Archive Artifacts') {
       steps {
-        archiveArtifacts 'target/*.vsix'
+        archiveArtifacts '*.vsix'
       }
     }
   }
