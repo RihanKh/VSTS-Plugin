@@ -44,7 +44,8 @@ function resolveCxARMUrl() {
 function getPresetIdByName($presetName) {
     $allPresets = getPresetList;
     foreach($preset in $allPresets){
-        if ($preset.name.trim() -like $presetName) {
+        write-debug $preset.name
+        if ($preset.name.trim() -eq $presetName.trim()) {
             return $preset.Id;
         }
     }
@@ -61,7 +62,7 @@ function resolveTeam(){
 function getTeamIdByName($teamName) {
     $allTeams = getTeamList;
     foreach($team in $allTeams) {
-        if ($team.fullName.trim() -like $teamName) {
+        if ($team.fullName.trim() -eq $teamName.trim()) {
             return $team.id;
         }
     }

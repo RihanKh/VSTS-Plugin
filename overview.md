@@ -24,7 +24,7 @@ Works with all IDEs, build management servers, bug tracking tools and source rep
 - **Protect Your Full Code Portfolio (Open Source and In-house Source Code)**
 Analyzing open source libraries, making sure licenses are being honored and weeding out any open source components which expose the application to known vulnerabilities,
 Checkmarx Open Source solution provides complete code portfolio coverage under a single unified solution and with no extra installations or administration required.
-- **Easy to initiate Open Source Analysis **
+- **Easy to initiate Open Source Analysis**
 Enhancing your code portfolio risk assessment coverage is merely a few mouse clicks away. With Checkmarx’s Open Source Analysis, there is no need for additional installations or multiple management interfaces. Simply turn it on and within minutes a detailed report is generated with clear results and detailed mitigation instructions. Analysis results are designed with the developer in mind.
 No time is wasted on trying to understand the required actions items to mitigate the detected security or compliance risk.
 
