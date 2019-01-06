@@ -12,10 +12,16 @@ function initRestClient($config){
     write-host "Initializing Cx client";
     
     $config.token = login
+    try {
+        resolveTeam;
+    }catch {
+        $errorMessage = "Connection Failed. Possible reason: Plugin version incompatible with CxSAST v8.7 or lower. If your CxSAST version is v8.8 or greater, please recheck connection details or contact support.";
+        throw $errorMessage
+    }
     if ($config.sastEnabled) {
         resolvePreset;
     }
-    resolveTeam;
+
     write-host "Resolving project";
     resolveProject;
 }
