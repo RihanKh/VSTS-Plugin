@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "cxsast",
   "name": "Checkmarx CxSAST",
-  "version": "8.80.5",
+  "version": "8.80.6",
   "publisher": "Checkmarx",
   "targets": [
     {
