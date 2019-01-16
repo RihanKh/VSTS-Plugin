@@ -12,10 +12,11 @@ function initRestClient($config){
     write-host "Initializing Cx client";
     
     $config.token = login
+    write-host "Successfully login"
     try {
         resolveTeam;
     }catch {
-        $errorMessage = "Connection Failed. Possible reason: Plugin version incompatible with CxSAST v8.7 or lower. If your CxSAST version is v8.8 or greater, please recheck connection details or contact support.";
+        $errorMessage = $_.Exception.Message +  ". Connection Failed. Validate the provided login credentials and server URL are correct. In addition, make sure the installed plugin version is compatible with the CxSAST version according to CxSAST release notes.";
         throw $errorMessage
     }
     if ($config.sastEnabled) {
