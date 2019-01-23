@@ -53,8 +53,9 @@ function resolveTeam(){
 
 function getTeamIdByName($teamName) {
     $allTeams = getTeamList;
+    $teamName2 =  "\$teamName";
     foreach($team in $allTeams) {
-        if ($team.fullName.trim() -eq $teamName.trim()) {
+        if (($team.fullName.trim() -eq $teamName.trim()) -or ($team.fullName.trim() -eq $teamName2.trim())) {
             return $team.id;
         }
     }
