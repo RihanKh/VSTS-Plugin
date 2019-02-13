@@ -63,7 +63,16 @@ function getTeamIdByName($teamName) {
 }
 
 function resolveProject() {
-    $project = getProjectByName $config.projectName $config.teamId
+    $returnProject = getProjectByName $config.projectName $config.teamId
+    if ($returnProject -is [Array]){
+        foreach($proj in $returnProject){
+            if($proj.name -eq $config.projectName -and $proj.id -eq $config.teamId){
+                $project = $proj;
+            }
+        }
+    }else{
+        $project = $returnProject;
+    }
     if ($project -eq $null) { #Project is new
         if ($config.denyProject -eq $true) { 
             $errMsg = ("Creation of the new project [{0}] is not authorized. Please use an existing project." -f $config.projectName);
@@ -71,13 +80,13 @@ function resolveProject() {
             throw ($errMsg);                       
         }
 
-    #Create newProject
-    $projectRequest = New-Object System.Object
-    $projectRequest | Add-Member -MemberType NoteProperty -Name name -Value $config.projectName;
-    $projectRequest | Add-Member -MemberType NoteProperty -Name owningTeam -Value $config.teamId
-    $projectRequest | Add-Member -MemberType NoteProperty -Name isPublic -Value $config.isPublic
-    $project = createNewProject $projectRequest;
-    $config.projectId = $project.Id;
+        #Create newProject
+        $projectRequest = New-Object System.Object
+        $projectRequest | Add-Member -MemberType NoteProperty -Name name -Value $config.projectName;
+        $projectRequest | Add-Member -MemberType NoteProperty -Name owningTeam -Value $config.teamId
+        $projectRequest | Add-Member -MemberType NoteProperty -Name isPublic -Value $config.isPublic
+        $project = createNewProject $projectRequest;
+        $config.projectId = $project.Id;
 
     }else {
         $config.projectId = $project.Id;
