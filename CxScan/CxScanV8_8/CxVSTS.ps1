@@ -160,36 +160,6 @@ try{
         #------- Init CxREST Client ------#
     initRestClient $config
 
-        #------- Create SAST Scan ------#
-    if ($config.sastEnabled){
-        $scanResults | Add-Member -MemberType NoteProperty -Name sastResultsReady -Value $false
-        $scanResults | Add-Member -MemberType NoteProperty -Name scanId -Value $null
-        $scanResults | Add-Member -MemberType NoteProperty -Name thresholdEnabled -Value $config.vulnerabilityThreshold
-         if($config.vulnerabilityThreshold){
-             $scanResults | Add-Member -MemberType NoteProperty -Name highThreshold -Value $config.highThreshold
-             $scanResults | Add-Member -MemberType NoteProperty -Name mediumThreshold -Value $config.mediumThreshold
-             $scanResults | Add-Member -MemberType NoteProperty -Name lowThreshold -Value $config.lowThreshold
-         }
-
-        #Create Zip File
-        Write-Host "Zipping sources";
-        $zipFilename = ZipSource $folderExclusion $fileExtension $sourceLocation
-        if(!(Test-Path -Path $zipfilename)){
-            OnError $scanResults $cxReportFile
-            Write-Host "Zip file is empty: no source to scan"
-            Write-Host "##vso[task.complete result=Skipped;]"
-            Exit
-        }
-        $config.zipFile = $zipFileName
-
-        $createSASTResponse = createSASTScan
-        $scanResults.scanId =  $createSASTResponse.id;
-        write-host ("SAST scan created successfully. CxLink to project state:{0} " -f $LINK_FORMAT.Replace("{projectId}" , $config.projectId).Replace("{url}", $config.url));
-
-        #Delete Zip File
-        DeleteFile $zipFilename
-    }
-
         #------- Create OSA Scan ------#
     if ($config.osaEnabled){
         try{
@@ -213,6 +183,36 @@ try{
                 $osaFailedMessage = ("Failed to create OSA scan : {0}" -f $_.Exception.Message);
                 Write-Error $osaFailedMessage;
               }
+    }
+
+            #------- Create SAST Scan ------#
+    if ($config.sastEnabled){
+        $scanResults | Add-Member -MemberType NoteProperty -Name sastResultsReady -Value $false
+        $scanResults | Add-Member -MemberType NoteProperty -Name scanId -Value $null
+        $scanResults | Add-Member -MemberType NoteProperty -Name thresholdEnabled -Value $config.vulnerabilityThreshold
+        if($config.vulnerabilityThreshold){
+            $scanResults | Add-Member -MemberType NoteProperty -Name highThreshold -Value $config.highThreshold
+            $scanResults | Add-Member -MemberType NoteProperty -Name mediumThreshold -Value $config.mediumThreshold
+            $scanResults | Add-Member -MemberType NoteProperty -Name lowThreshold -Value $config.lowThreshold
+        }
+
+        #Create Zip File
+        Write-Host "Zipping sources";
+        $zipFilename = ZipSource $folderExclusion $fileExtension $sourceLocation
+        if(!(Test-Path -Path $zipfilename)){
+            OnError $scanResults $cxReportFile
+            Write-Host "Zip file is empty: no source to scan"
+            Write-Host "##vso[task.complete result=Skipped;]"
+            Exit
+        }
+        $config.zipFile = $zipFileName
+
+        $createSASTResponse = createSASTScan
+        $scanResults.scanId =  $createSASTResponse.id;
+        write-host ("SAST scan created successfully. CxLink to project state:{0} " -f $LINK_FORMAT.Replace("{projectId}" , $config.projectId).Replace("{url}", $config.url));
+
+        #Delete Zip File
+        DeleteFile $zipFilename
     }
 
         #------ Asynchronous MODE ------#
