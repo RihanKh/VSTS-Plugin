@@ -1,7 +1,8 @@
 ﻿
 #OSA API
 function createOSAScan() {
-     write-host ("-----------------------------------Create CxOSA Scan:------------------------------------");
+    write-host ("-----------------------------------Create CxOSA Scan:------------------------------------");
+
     #OSA FSA
     $tmpPath = [System.IO.Path]::GetTempPath();
     [System.Reflection.Assembly]::LoadFile("$PSScriptRoot/osaDll/CxOSA.dll") | out-null

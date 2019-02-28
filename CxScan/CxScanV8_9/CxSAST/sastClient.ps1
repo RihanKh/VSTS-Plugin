@@ -53,6 +53,12 @@ function getSASTResults($scanResults) {
         #retrieve SAST scan results
         write-host "Retrieving SAST scan results";
         ($statisticsResults = getScanStatistics $scanId) |out-null
+
+        if($statisticsResults.highSeverity -eq $null)
+        {
+            throw("Failed to get scan statics");
+        }
+
         $scanResults = addSASTResults $statisticsResults $scanResults;
         printResultsToConsole $scanResults;
       

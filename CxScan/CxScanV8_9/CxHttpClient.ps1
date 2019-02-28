@@ -19,6 +19,7 @@ function getRequest($relPath, $contentType, $expectStatus, $failedMsg, $retry){
 function getRequestFullPath($basePath, $relPath,$acceptHeader, $contentType, $expectStatus, $failedMsg, $retry){
     $headers = @{}
     $headers.Add("Accept", $acceptHeader);
+    $headers.Add("cxOrigin", $config.cxOrigin)
 
     if ($config.token -ne $null) {
         $headers.Add("Authorization", $config.token.token_type + " " + $config.token.access_token)  
@@ -29,6 +30,7 @@ function getRequestFullPath($basePath, $relPath,$acceptHeader, $contentType, $ex
     try{
         $fullPath = ($basePath + $relPath)
         $servicePoint = [System.Net.ServicePointManager]::FindServicePoint($fullPath)
+        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12;
         $response = Invoke-RestMethod -Uri $fullPath -Method Get -Headers $headers -ContentType $contentType
         $servicePoint.CloseConnectionGroup("") |out-null;
        

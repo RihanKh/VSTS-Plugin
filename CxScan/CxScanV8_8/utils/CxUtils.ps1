@@ -17,17 +17,12 @@ function ResolveVal($val){
       }
  }
 
-function createScanResults() {
+function initScanResults($config){
     $scanResults = New-Object System.Object
-    $scanResults | Add-Member -MemberType NoteProperty -Name buildFailed -Value $false
-
-    return $scanResults;
-}
-
-function initScanResults($config, $scanResults){
     $scanResults | Add-Member -MemberType NoteProperty -Name url -Value $config.url
     $scanResults | Add-Member -MemberType NoteProperty -Name syncMode -Value $config.isSyncMode
     $scanResults | Add-Member -MemberType NoteProperty -Name osaEnabled -Value $config.osaEnabled
+    $scanResults | Add-Member -MemberType NoteProperty -Name buildFailed -Value $false
 
     return $scanResults;
 }

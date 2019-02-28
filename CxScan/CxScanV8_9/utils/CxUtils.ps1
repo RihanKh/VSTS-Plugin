@@ -16,16 +16,12 @@ function ResolveVal($val){
           return "none"
       }
  }
-function createScanResults() {
-    $scanResults = New-Object System.Object
-    $scanResults | Add-Member -MemberType NoteProperty -Name buildFailed -Value $false
-    $scanResults | Add-Member -MemberType NoteProperty -Name errorOccurred -Value $false
-
-    return $scanResults;
-}
 
 
 function initScanResults($config, $scanResults){
+    $scanResults = New-Object System.Object
+    $scanResults | Add-Member -MemberType NoteProperty -Name buildFailed -Value $false
+    $scanResults | Add-Member -MemberType NoteProperty -Name errorOccurred -Value $false
 
     $scanResults | Add-Member -MemberType NoteProperty -Name url -Value $config.url
     $scanResults | Add-Member -MemberType NoteProperty -Name syncMode -Value $config.isSyncMode

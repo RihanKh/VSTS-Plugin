@@ -6,7 +6,6 @@ Param(
     $presetList,
     [String] $customPreset,
     [String] $incScan,
-    [String] $fsois,
     [String] $sourceFolder,
     [String] $folderExclusion,
     [String] $fileExtension,
@@ -95,67 +94,7 @@ if ($authScheme -ne 'UserNamePassword'){
 	throw "The authorization scheme $authScheme is not supported for a CX server."
 }
 
-$agentProxy = [string]$serviceEndpoint.Authorization.Parameters.agentProxy
-
-[String]$srcRepoType = [String]$env:BUILD_REPOSITORY_PROVIDER
-if($srcRepoType -Match 'git'){
-    [String]$branchName = [String]$env:BUILD_SOURCEBRANCHNAME
-    if(!([string]::IsNullOrEmpty($env:SYSTEM_ACCESSTOKEN))){
-        $resource = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPROJECTID/_apis/build/definitions/$($env:SYSTEM_DEFINITIONID)?api-version=2.0"
-        Write-Host "URL for build definition: $resource"
-        [String]$defaultBranch = ""
-        Try {
-            $response;
-            if([string]::IsNullOrEmpty($agentProxy)){
-                $response = Invoke-RestMethod -Uri $resource -Headers @{Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"}
-            } else {
-                $response = Invoke-RestMethod -Uri $resource -Proxy $agentProxy -Headers @{Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"}
-            }
-
-            Try {
-                $defaultBranch = $response.repository.defaultBranch
-            } Catch {
-                Write-Host "Fail to get default branch on first attempt"
-            }
-            if([string]::IsNullOrEmpty($defaultBranch)){
-                Try {
-                    $defaultBranch = $response.defaultBranch
-                } Catch {
-                    OnSASTError $scanResults $cxReportFile
-                    Write-Host ("##vso[task.logissue type=error;]Fail to read default branch from: {0}" -f $resource)
-                    Exit
-                }
-            }
-
-            $defaultBranch = $defaultBranch.Substring($defaultBranch.LastIndexOf("/") + 1)
-            Write-Host ("Default branch: '{0}', Current Branch: '{1}'" -f $defaultBranch, $branchName)
-
-            if(!($branchName -Like $defaultBranch)){
-                OnSASTError $scanResults $cxReportFile
-                Write-Host "Default branch not equal to branch that source was push to."
-                Write-Host "##vso[task.complete result=Skipped;]"
-                Exit
-            }
-        } Catch {
-            OnSASTError $scanResults $cxReportFile
-            Write-Host ("##vso[task.logissue type=error;]Fail to get default branch from server: {0}" -f $_.Exception.Message)
-            Write-Host "##vso[task.complete result=Failed;]DONE"
-            $buildFailed = $true
-            Exit
-        }
-    } Else {
-        if(!($branchName -Like 'master')){
-            OnSASTError $scanResults $cxReportFile
-            Write-Host "Access to OAuth token is not given and not running on 'master' branch."
-            Write-Host "##vso[task.complete result=Skipped;]"
-            Exit
-        }
-    }
-}
-
-
 $ErrorActionPreference = "Stop"
-$reportPath = [String]$env:COMMON_TESTRESULTSDIRECTORY
 $sourceLocation = [String]$env:BUILD_SOURCESDIRECTORY
 $sourceLocation = $sourceLocation.trim()
 $serviceUrl = [string]$serviceEndpoint.Url  #Url to cx server
@@ -172,7 +111,6 @@ $resolverUrl = $serviceUrl + $resolverUrlExtension
     Write-Host " "
     Write-Host "-------------------------------Configurations:--------------------------------";
     Write-Host ("URL: {0}" -f $serviceUrl)
-    Write-Host ("Agent proxy: {0}" -f $(ResolveString $agentProxy))
     Write-Host ("Project name: {0}" -f $projectName)
     Write-Host ("Source location: {0}" -f $sourceLocation)
     Write-Host ("Scan timeout in minutes: {0}" -f $(ResolveString $scanTimeout))
@@ -288,10 +226,6 @@ $CliScanArgs.IsPrivateScan = 0
 
 if($incScan){
 	$CliScanArgs.IsIncremental = 1
-	if(!([string]::IsNullOrEmpty($fsois))){
-		[Int]$fsois = [convert]::ToInt32($fsois, 10)
-		#write-host "todo: add scans count environment variable"
-	}
 }
 
 $CliScanArgs.Comment = "Scan triggered by CxVSTS"

@@ -12,9 +12,10 @@
   "version": {
     "Major": 88,
     "Minor": 0,
-    "Patch": 6
+    "Patch": 11
   },
-  "demands": [],
+  "demands": [
+  ],
   "minimumAgentVersion": "1.0.0",
   "groups": [
     {
@@ -97,7 +98,7 @@
       "type": "string",
       "label": "Team",
       "required": true,
-      "helpMarkDown": "The full team name (for example, \\CxServer\\SP\\Company\\Users).",
+      "helpMarkDown": "The full team name (for example, CxServer\\SP\\Company\\Users).",
       "groupName": "serverSettings"
     },
     {
@@ -114,7 +115,7 @@
       "type": "string",
       "label": "Folder Exclusion",
       "required": false,
-      "defaultValue": "cvs, .svn, .hg , .git, .bzr, bin , obj,  backup, .idea, node_modules",
+      "defaultValue": "cvs, .svn, .hg , .git, .bzr, bin , obj,  backup, .idea",
       "helpMarkDown": "Comma delineated list of the folders to exclude from the scan (for example: dto,target,WEB-INF)",
       "groupName": "scanSettings"
     },

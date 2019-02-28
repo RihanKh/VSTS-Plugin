@@ -127,9 +127,6 @@ Write-Host
 Write-Host "                                               "
 Write-Host "Starting Checkmarx scan"
 
-
-$scanResults = createScanResults
-
 try{
         #------- Resolve Params ------#
     [boolean]$vulnerabilityThreshold = [System.Convert]::ToBoolean($vulnerabilityThreshold);
@@ -162,14 +159,32 @@ try{
     write-host 'Entering CxScanner ......' -foregroundcolor "green"
     $config = createConfig ;
     printConfiguration $config;
-    $scanResults = initScanResults $config $scanResults
+    $scanResults = initScanResults $config
         #------- Init CxREST Client ------#
     initRestClient $config
+
+        #------- Create OSA Scan ------#
+    if ($config.osaEnabled){
+        try{
+                $osaScan = createOSAScan
+                $osaLink =  ("{0}/CxWebClient/SPA/#/viewer/project/{1}"-f $config.url, $config.projectId);
+                Write-Host "OSA scan created successfully. Link to project state: $osaLink";
+                $scanResults.osaScanId = $osaScan.scanId;
+                $scanResults.osaProjectSummaryLink = $osaLink
+            }Catch {
+                 Write-Host ("##vso[task.complete result=Failed;]Failed to create OSA scan : {0}" -f $_.Exception.Message)
+                 $scanResults.osaFailed = $true;
+                 $osaFailedMessage = ("Failed to create OSA scan : {0}" -f $_.Exception.Message);
+                 $scanResults.errorOccurred = $true
+              }
+    }
+
+
 
         #------- Create SAST Scan ------#
     if ($config.sastEnabled){
 
-        #Create Zip File
+    #Create Zip File
         Write-Host "Zipping sources";
         $zipFilename = ZipSource $folderExclusion $fileExtension $sourceLocation
         if(!(Test-Path -Path $zipfilename)){
@@ -188,21 +203,7 @@ try{
         DeleteFile $zipFilename
     }
 
-        #------- Create OSA Scan ------#
-    if ($config.osaEnabled){
-        try{
-                $osaScan = createOSAScan
-                $osaLink =  ("{0}/CxWebClient/SPA/#/viewer/project/{1}"-f $config.url, $config.projectId);
-                Write-Host "OSA scan created successfully. Link to project state: $osaLink";
-                $scanResults.osaScanId = $osaScan.scanId;
-                $scanResults.osaProjectSummaryLink = $osaLink
-            }Catch {
-                 Write-Host ("##vso[task.complete result=Failed;]Failed to create OSA scan : {0}" -f $_.Exception.Message)
-                 $scanResults.osaFailed = $true;
-                 $osaFailedMessage = ("Failed to create OSA scan : {0}" -f $_.Exception.Message);
-                 $scanResults.errorOccurred = $true
-              }
-    }
+
 
         #------ Asynchronous MODE ------#
     if(!$config.isSyncMode){

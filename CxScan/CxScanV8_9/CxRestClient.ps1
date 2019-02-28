@@ -12,11 +12,13 @@ function initRestClient($config){
     write-host "Initializing Cx client";
     
     $config.token = login
+    write-host "Successfully login"
+
 
     try {
         resolveTeam;
     }catch {
-        $errorMessage = "Connection Failed. Validate the provided login credentials and server URL are correct. In addition, make sure the installed plugin version is compatible with the CxSAST version according to CxSAST release notes.";
+        $errorMessage = $_.Exception.Message +  ". Connection Failed. Validate the provided login credentials and server URL are correct. In addition, make sure the installed plugin version is compatible with the CxSAST version according to CxSAST release notes.";
         throw $errorMessage
     }
 
@@ -67,8 +69,10 @@ function resolveTeam(){
 
 function getTeamIdByName($teamName) {
     $allTeams = getTeamList;
+    $teamName2 =  "\$teamName";
+
     foreach($team in $allTeams) {
-        if ($team.fullName.trim() -eq $teamName.trim()) {
+        if (($team.fullName.trim() -eq $teamName.trim()) -or ($team.fullName.trim() -eq $teamName2.trim())) {
             return $team.id;
         }
     }
@@ -76,21 +80,29 @@ function getTeamIdByName($teamName) {
 }
 
 function resolveProject() {
-    $project = getProjectByName $config.projectName $config.teamId
+    $returnProject = getProjectByName $config.projectName $config.teamId
+    if ($returnProject -is [Array]){
+        foreach($proj in $returnProject){
+            if($proj.name -eq $config.projectName -and $proj.id -eq $config.teamId){
+                $project = $proj;
+            }
+        }
+    }else{
+        $project = $returnProject;
+    }
     if ($project -eq $null) { #Project is new
-        if ($config.denyProject -eq $true) { 
+        if ($config.denyProject -eq $true) {
             $errMsg = ("Creation of the new project [{0}] is not authorized. Please use an existing project." -f $config.projectName);
             $errMsg += " You can enable the creation of new projects by disabling the Deny new Checkmarx projects creation checkbox in the Checkmarx plugin global settings.";
-            throw ($errMsg);                       
+            throw ($errMsg);
         }
-
-    #Create newProject
-    $projectRequest = New-Object System.Object
-    $projectRequest | Add-Member -MemberType NoteProperty -Name name -Value $config.projectName;
-    $projectRequest | Add-Member -MemberType NoteProperty -Name owningTeam -Value $config.teamId
-    $projectRequest | Add-Member -MemberType NoteProperty -Name isPublic -Value $config.isPublic
-    $project = createNewProject $projectRequest;
-    $config.projectId = $project.Id;
+        #Create newProject
+        $projectRequest = New-Object System.Object
+        $projectRequest | Add-Member -MemberType NoteProperty -Name name -Value $config.projectName;
+        $projectRequest | Add-Member -MemberType NoteProperty -Name owningTeam -Value $config.teamId
+        $projectRequest | Add-Member -MemberType NoteProperty -Name isPublic -Value $config.isPublic
+        $project = createNewProject $projectRequest;
+        $config.projectId = $project.Id;
 
     }else {
         $config.projectId = $project.Id;
