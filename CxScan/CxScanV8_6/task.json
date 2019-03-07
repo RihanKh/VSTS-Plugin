@@ -10,9 +10,9 @@
   ],
   "author": "Checkmarx",
   "version": {
-    "Major": 86,
+    "Major": 88,
     "Minor": 0,
-    "Patch": 6
+    "Patch": 11
   },
   "demands": [
   ],
@@ -76,6 +76,7 @@
         "OWASP Mobile TOP 10 - 2016": "OWASP Mobile TOP 10 - 2016",
         "OWASP TOP 10 - 2010": "OWASP TOP 10 - 2010",
         "OWASP TOP 10 - 2013": "OWASP TOP 10 - 2013",
+        "OWASP TOP 10 - 2017": "OWASP TOP 10 - 2017",
         "PCI": "PCI",
         "SANS top 25": "SANS top 25",
         "STIG": "STIG",
@@ -123,8 +124,33 @@
       "type": "string",
       "label": "Include/Exclude File Extensions",
       "required": false,
-      "defaultValue": "!*.DS_Store, !*.ipr,     !*.iws,\n!*.bak,    !*.tmp,     !*.aac,      !*.aif,      !*.iff,     !*.m3u,   !*.mid,   !*.mp3,\n!*.mpa,    !*.ra,        !*.wav,      !*.wma,      !*.3g2,     !*.3gp,   !*.asf,   !*.asx,\n!*.avi,    !*.flv,       !*.mov,     !*.mp4,      !*.mpg,     !*.rm,    !*.swf,   !*.vob,\n!*.wmv,    !*.bmp,   !*.gif,       !*.jpg,      !*.png,     !*.psd,   !*.tif,   !*.swf,\n!*.jar,    !*.zip,       !*.rar,      !*.exe,      !*.dll,     !*.pdb,   !*.7z,    !*.gz,\n!*.tar.gz, !*.tar,       !*.gz,       !*.ahtm,     !*.ahtml,   !*.fhtml, !*.hdm,\n!*.hdml,   !*.hsql,      !*.ht,      !*.hta,      !*.htc,     !*.htd,   !*.war,   !*.ear,\n!*.htmls,  !*.ihtml,     !*.mht,      !*.mhtm,     !*.mhtml,   !*.ssi,   !*.stm,\n!*.stml,   !*.ttml,      !*.txn,      !*.xhtm,     !*.xhtml,   !*.class, !*.iml",
+      "defaultValue": "!*.DS_Store, !*.ipr,     !*.iws,\n!*.bak,    !*.tmp,     !*.aac,      !*.aif,      !*.iff,     !*.m3u,   !*.mid,   !*.mp3,\n!*.mpa,    !*.ra,        !*.wav,      !*.wma,      !*.3g2,     !*.3gp,   !*.asf,   !*.asx,\n!*.avi,    !*.flv,       !*.mov,     !*.mp4,      !*.mpg,     !*.rm,    !*.swf,   !*.vob,\n!*.wmv,    !*.bmp,       !*.gif,       !*.jpg,      !*.png,     !*.psd,   !*.tif,   !*.swf,\n!*.jar,    !*.zip,       !*.rar,      !*.exe,      !*.dll,     !*.pdb,   !*.7z,    !*.gz,\n!*.tar.gz, !*.tar,       !*.gz,       !*.ahtm,     !*.ahtml,   !*.fhtml, !*.hdm,\n!*.hdml,   !*.hsql,      !*.ht,      !*.hta,      !*.htc,     !*.htd,   !*.war,   !*.ear,\n!*.htmls,  !*.ihtml,     !*.mht,      !*.mhtm,     !*.mhtml,   !*.ssi,   !*.stm,\n!*.stml,   !*.ttml,      !*.txn,      !*.xhtm,     !*.xhtml,   !*.class, !*.iml",
       "helpMarkDown": "Comma separated list of include or exclude wildcard patterns. Exclude patterns start with exclamation mark \"!\" [Exclusion Example: !*.tmp, !*.html.   Inclusion Example: *.java ]",
+      "groupName": "scanSettings"
+    },
+    {
+      "name": "scanTimeout",
+      "type": "string",
+      "label": "Scan Timeout In Minutes",
+      "required": false,
+      "helpMarkDown": "Abort the scan if exceeds specified timeout in minutes ",
+      "groupName": "scanSettings"
+    },
+    {
+      "name": "denyProject",
+      "type": "boolean",
+      "label": "Deny new Checkmarx projects creation",
+      "required": false,
+      "defaultValue": "false",
+      "helpMarkDown": "Enabling this option will prohibit creation of new projects in Checkmarx, or assigning an existing project to a different team. Disabling this option will allow this action. ",
+      "groupName": "scanSettings"
+    },
+    {
+      "name": "comment",
+      "type": "string",
+      "label": "Comment",
+      "required": false,
+      "helpMarkDown": "Free text comment that will appear within CxSAST scan information",
       "groupName": "scanSettings"
     },
     {
