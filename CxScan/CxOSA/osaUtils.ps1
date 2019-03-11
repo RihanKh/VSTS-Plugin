@@ -1,4 +1,4 @@
-function writeToOsaListToTemp($osaDependenciesJson, $tempDir) {
+﻿function writeToOsaListToTemp($osaDependenciesJson, $tempDir) {
         try {
         $filePath = Join-Path $tempDir $"CxOSAFileList.json"
         New-Item -ItemType File $filePath

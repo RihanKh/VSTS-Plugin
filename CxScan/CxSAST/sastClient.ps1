@@ -1,4 +1,4 @@
-function createSASTScan()  {
+﻿function createSASTScan()  {
 
     write-host ("-----------------------------------Create CxSAST Scan:-----------------------------------"); 
     

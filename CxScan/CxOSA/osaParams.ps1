@@ -1,4 +1,4 @@
-$OSA_SCAN_PROJECT = "osa/scans";#  "osa/inventory";
+﻿$OSA_SCAN_PROJECT = "osa/scans";#  "osa/inventory";
 $OSA_SCAN_STATUS = "osa/scans/{scanId}";
 $OSA_SCAN_SUMMARY = "osa/reports";
 $OSA_SCAN_LIBRARIES = "osa/libraries";

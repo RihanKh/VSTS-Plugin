@@ -1,4 +1,4 @@
-$SAST_ENGINE_CONFIG = "sast/engineConfigurations";
+﻿$SAST_ENGINE_CONFIG = "sast/engineConfigurations";
 $SAST_UPDATE_SCAN_SETTINGS = "sast/scanSettings"; #Update preset and configuration
 $SAST_GET_SCAN_SETTINGS = "sast/scanSettings/{projectId}"; #Update preset and configuration
 $SAST_CREATE_SCAN = "sast/scans"; #Run a new Scan

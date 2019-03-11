@@ -1,4 +1,4 @@
-$newHighCount = 0;
+﻿$newHighCount = 0;
 $newMediumCount = 0;
 $newLowCount = 0;
 $newInfoCount = 0;

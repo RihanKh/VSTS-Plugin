@@ -3,7 +3,7 @@
   "id": "cxsast",
   "name": "Checkmarx CxSAST",
   "version": "8.80.100",
-  "publisher": "ilandayan",
+  "publisher": "Checkmarx",
   "targets": [
     {
       "id": "Microsoft.VisualStudio.Services"

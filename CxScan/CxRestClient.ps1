@@ -1,4 +1,4 @@
-$AUTHENTICATION = "auth/identity/connect/token";
+﻿$AUTHENTICATION = "auth/identity/connect/token";
 $CXPRESETS = "sast/presets";
 $CXTEAMS = "auth/teams";
 

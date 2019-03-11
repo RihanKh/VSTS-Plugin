@@ -1,4 +1,4 @@
-
+﻿
 #OSA API
 function createOSAScan() {
     write-host ("-----------------------------------Create CxOSA Scan:------------------------------------");

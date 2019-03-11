@@ -1,4 +1,4 @@
-function getScanReport($scanId, $reportType, $contentType) {
+﻿function getScanReport($scanId, $reportType, $contentType) {
     $reportRequest = New-Object System.Object
     $reportRequest | Add-Member -MemberType NoteProperty -Name scanId -Value $scanId;
     $reportRequest | Add-Member -MemberType NoteProperty -Name reportType -Value $reportType;
