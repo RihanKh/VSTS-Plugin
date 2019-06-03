@@ -3,7 +3,7 @@
   "id": "cxsast",
   "name": "Checkmarx CxSAST",
   "version": "8.90.0",
-  "publisher": "ilandayan",
+  "publisher": "checkmarxdev",
   "targets": [
     {
       "id": "Microsoft.VisualStudio.Services"
@@ -15,7 +15,7 @@
     "default": "extension-icon.png"
   },
   "categories": [
-    "Build and release"
+    "Azure Pipelines"
   ],
   "tags": [
     "Security",
