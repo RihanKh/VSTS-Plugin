@@ -70,10 +70,16 @@ export class ConfigReader {
     }
 
     private static getNumericInput(name: string): number | undefined {
-        const rawValue = taskLib.getInput(name, false);
+        let rawValue = taskLib.getInput(name, false);
         let result;
         if (typeof rawValue !== 'undefined') {
-            result = +rawValue;
+            if (rawValue == null) 
+            {
+                result = NaN;
+            }
+            else {
+                result = +rawValue;
+            }
         }
         return result;
     }
