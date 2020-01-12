@@ -115,6 +115,7 @@ export class HttpClient {
     }
 
     private loginWithStoredCredentials() {
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         const fullUrl = url.resolve(this.baseUrl, 'auth/identity/connect/token');
         return request
             .post(fullUrl)
