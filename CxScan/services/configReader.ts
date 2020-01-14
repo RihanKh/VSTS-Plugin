@@ -70,7 +70,7 @@ export class ConfigReader {
     }
 
     private static getNumericInput(name: string): number | undefined {
-        let rawValue = taskLib.getInput(name, false);
+        const rawValue = taskLib.getInput(name, false);
         let result;
         if (typeof rawValue !== 'undefined') {
             if (rawValue == null) 
