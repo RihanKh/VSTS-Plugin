@@ -29,6 +29,7 @@ export class ReportingClient {
     }
 
     private async startReportGeneration(scanId: number) {
+        await this.delay(5555);
         const request = {
             scanId: scanId,
             reportType: ReportingClient.REPORT_TYPE
@@ -66,10 +67,31 @@ export class ReportingClient {
         return xml2js.parseStringPromise(reportBuffer);
     }
 
+    private delay(ms: number) {
+        this.log.debug("Activating delay for: " + ms);
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     private async checkIfReportIsCompleted(reportId: number) {
         const path = `reports/sastScan/${reportId}/status`;
-        const response = await this.httpClient.getRequest(path);
-        const status = response.status.value;
+        let time = new Date();
+        await this.delay(5555);
+        let response = await this.httpClient.getRequest(path);
+        let status = response.status.value;
+
+        if (status === ReportStatus.Failed) {
+            this.log.warning("Failed on first report status request");
+            for (let i = 1; i < 5; i++) {
+                await this.delay(5555);
+                response = await this.httpClient.getRequest(path);
+                status = response.status.value;
+                time = new Date();
+                this.log.warning("Time " + time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds() + ": Scan status of request number: " + (i + 1) + ": [" + status + "], requested path: + " + path);
+                if (status !== ReportStatus.Failed) {
+                    break;
+                }
+            }
+        }
 
         const isCompleted =
             status === ReportStatus.Deleted ||
