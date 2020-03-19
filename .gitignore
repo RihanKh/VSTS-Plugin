@@ -1,4 +1,5 @@
 CxScan/node_modules
+CxScan/target
 .idea
 *.iml
 *.vsix
