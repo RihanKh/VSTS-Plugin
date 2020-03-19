@@ -24,11 +24,13 @@ export class ReportingClient {
 
     async generateReport(scanId: number) {
         const reportId = await this.startReportGeneration(scanId);
+        this.log.info("ReportId: " + reportId);
         await this.waitForReportGenerationToFinish(reportId);
         return this.getReport(reportId);
     }
 
     private async startReportGeneration(scanId: number) {
+        // Added delay for sync issue with SAST REST API - create report
         await this.delay(5555);
         const request = {
             scanId: scanId,
@@ -75,6 +77,7 @@ export class ReportingClient {
     private async checkIfReportIsCompleted(reportId: number) {
         const path = `reports/sastScan/${reportId}/status`;
         let time = new Date();
+        // Added delay for sync issue with SAST REST API - status check
         await this.delay(5555);
         let response = await this.httpClient.getRequest(path);
         let status = response.status.value;

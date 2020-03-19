@@ -77,6 +77,11 @@ export class CxClient {
         return scanResult;
     }
 
+    private delay(ms: number) {
+        this.log.debug("Activating delay for: " + ms);
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     private async getSASTResults(result: ScanResults): Promise<ScanResults> {
         this.log.info('------------------------------------Get CxSAST Results:----------------------------------');
         this.log.info('Retrieving SAST scan results');
@@ -234,7 +239,20 @@ export class CxClient {
 
     private async addDetailedReportToScanResults(result: ScanResults) {
         const client = new ReportingClient(this.httpClient, this.log);
-        const reportXml = await client.generateReport(result.scanId);
+        let reportXml;
+
+        for (let i = 1; i < 25; i++) {
+            try {
+                reportXml = await client.generateReport(result.scanId);
+                if (typeof reportXml !== 'undefined' && reportXml !== null) {
+                    break;
+                }
+                await this.delay(5555);
+            } catch (e) {
+                this.log.warning('Failed to generate report on attempt number: ' + i);
+                await this.delay(15555);
+            }
+        }
 
         const doc = reportXml.CxXMLResults;
         result.scanStart = doc.$.ScanStart;
