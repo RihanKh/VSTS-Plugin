@@ -247,7 +247,7 @@ export class CxClient {
                 if (typeof reportXml !== 'undefined' && reportXml !== null) {
                     break;
                 }
-                await this.delay(5555);
+                await this.delay(15555);
             } catch (e) {
                 this.log.warning('Failed to generate report on attempt number: ' + i);
                 await this.delay(15555);
