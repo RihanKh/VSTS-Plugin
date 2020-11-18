@@ -12,7 +12,7 @@
   "version": {
     "Major": 2020,
     "Minor": 4,
-    "Patch": 1
+    "Patch": 2
   },
   "demands": [],
   "minimumAgentVersion": "1.0.0",
@@ -58,7 +58,8 @@
       "helpMarkDown": "Select in order to enable the CxSast scan",
       "groupName": "scanSettings",
       "defaultValue": true
-    },
+    }
+    ,
     {
       "name": "CheckmarxService",
       "type": "connectedService:Checkmarx-Endpoint",
@@ -126,13 +127,17 @@
       "visibleRule": "enableSastScan = true"
     },
     {
-      "name": "incScan",
-      "type": "boolean",
-      "label": "Incremental Scan",
-      "required": false,
-      "defaultValue": "true",
-      "helpMarkDown": "Set true for incremental scan. If no scan was done aeyet, the scan will be a full scan and the following ones will be incremental.",
+      "name": "scanType",
+      "type": "pickList",
+      "label": "Scan Type",
+      "required": true,
       "groupName": "scanSettings",
+      "defaultValue": "Incremental Scan",
+      "helpMarkDown": "Scan type defined the scan mode on engine,to scan the entire source select 'Full Scan',to scan only the new and modified files within the project that was previously scanned select 'Incremental Scan- defualt', If no scan was done yet, the scan will be a full scan and the following ones will be incremental.",
+      "options": {
+        "Incremental Scan": "Incremental Scan",
+        "Full Scan": "Full Scan"
+      },
       "visibleRule": "enableSastScan = true"
     },
     {

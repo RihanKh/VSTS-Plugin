@@ -78,6 +78,9 @@ export class ConfigReader {
             presetName = taskLib.getInput('preset', false) || '';
         }
 
+        const scanType = taskLib.getInput('scanType', false) || '';
+        const isIncremental = (scanType === 'Incremental Scan');
+
         let rawTimeout = taskLib.getInput('scanTimeout', false) as any;
         let scanTimeoutInMinutes = +rawTimeout;
         const scaResult: ScaConfig = {
@@ -104,7 +107,7 @@ export class ConfigReader {
             denyProject: taskLib.getBoolInput('denyProject', false),
             folderExclusion: taskLib.getInput('folderExclusion', false) || '',
             fileExtension: taskLib.getInput('fileExtension', false) || '',
-            isIncremental: taskLib.getBoolInput('incScan', false) || false,
+            isIncremental: isIncremental,
             presetName,
             scanTimeoutInMinutes: scanTimeoutInMinutes || undefined,
             comment: taskLib.getInput('comment', false) || '',
@@ -113,7 +116,7 @@ export class ConfigReader {
             highThreshold: ConfigReader.getNumericInput('high'),
             mediumThreshold: ConfigReader.getNumericInput('medium'),
             lowThreshold: ConfigReader.getNumericInput('low'),
-            forceScan: false,
+            forceScan: !isIncremental,
             isPublic: true
         };
 
@@ -143,10 +146,11 @@ URL: ${config.sastConfig.serverUrl}
 Project name: ${config.projectName}
 Source location: ${config.sourceLocation}
 Full team path: ${config.sastConfig.teamName}
+Scan type : ${taskLib.getInput('scanType', false)}
 Preset name: ${config.sastConfig.presetName}
 Scan timeout in minutes: ${config.sastConfig.scanTimeoutInMinutes}
 Deny project creation: ${config.sastConfig.denyProject}
-
+Force scan: ${config.sastConfig.forceScan}
 Is incremental scan: ${config.sastConfig.isIncremental}
 Folder exclusions: ${formatOptionalString(config.sastConfig.folderExclusion)}
 Include/Exclude Wildcard Patterns: ${formatOptionalString(config.sastConfig.fileExtension)}
